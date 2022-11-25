@@ -8,6 +8,7 @@ export function DefaultProvider({ children }) {
   const [deleteStatus, setDeleteStatus] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [timeLogs, setTimeLogs] = useState([]);
+  const [invoices, setinvoices] = useState([]);
 
   return (
     <DefaultContext.Provider
@@ -21,7 +22,9 @@ export function DefaultProvider({ children }) {
         tasks,
         setTasks,
         timeLogs,
-        setTimeLogs
+        setTimeLogs,
+        invoices,
+        setinvoices,
       }}
     >
       {children}

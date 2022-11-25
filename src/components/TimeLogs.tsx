@@ -2,12 +2,9 @@ import { useDefaultProvider } from "../context/Default";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
 import Table from "react-bootstrap/Table";
 import axios from "axios";
 import { AiOutlineDelete } from "react-icons/ai";
-import Button from "react-bootstrap/Button";
 import { useState } from "react";
 
 function TimeLogs() {
@@ -18,6 +15,25 @@ function TimeLogs() {
   function handleSum(event: any) {
     setSum(event.target.value);
   }
+  function monthNameToNumb(monthName: string) {
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    let month = months.indexOf(monthName);
+    return month ? month + 1 : 0;
+  }
+
   type Tasks = {
     id: string;
     name: string;
@@ -53,10 +69,10 @@ function TimeLogs() {
     hourlyrate: string;
     date: string;
     time: string;
-    taskId:string;
+    taskId: string;
+    start: string;
   };
 
-  //const getIdName =
   return (
     <div style={{ flexGrow: 1 }}>
       <Container style={{ paddingTop: "50px" }}>
@@ -72,28 +88,41 @@ function TimeLogs() {
                 </tr>
               </thead>
               <tbody>
-                {timeLogs.map((item: Name) => (
-                  <tr key={item.id}>
-                    <td>
-                    {
-                        tasks.filter((obj: { id: string }) => {
-                          return obj.id === item.taskId;
-                        })[0].name
-                      }
-                    </td>
-                    <td>{item.date}</td>
-                    <td style={{ width: "30%" }}>{item.time}</td>
+                {timeLogs.map((item: Name) => {
+                  const [strDay, strMonth, day, year] = item.start.split(" ");
+                  const month = monthNameToNumb(strMonth);
 
-                    <td>
-                      <a
-                        onClick={() => deleteTimeLogs(item.id)}
-                        style={{ paddingRight: "20px" }}
-                      >
-                        <AiOutlineDelete size={22} />
-                      </a>
-                    </td>
-                  </tr>
-                ))}
+                  const past = new Date(
+                    year + "-" + month.toString() + "-" + day
+                  );
+                  const now = new Date();
+                  const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000;
+                  const diff = now.getTime() - past.getTime();
+                  if (diff >= thirtyDaysMs) return;
+
+                  return (
+                    <tr key={item.id}>
+                      <td>
+                        {
+                          tasks.filter((obj: { id: string }) => {
+                            return obj.id === item.taskId;
+                          })[0].name
+                        }
+                      </td>
+                      <td>{item.date}</td>
+                      <td style={{ width: "30%" }}>{item.time}</td>
+
+                      <td>
+                        <a
+                          onClick={() => deleteTimeLogs(item.id)}
+                          style={{ paddingRight: "20px" }}
+                        >
+                          <AiOutlineDelete size={22} />
+                        </a>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </Table>
           </Col>

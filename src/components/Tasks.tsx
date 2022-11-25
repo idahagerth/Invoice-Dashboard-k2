@@ -18,7 +18,7 @@ function Tasks() {
   type Name = {
     name: string;
     id: string;
-    projectId:string;
+    projectId: string;
   };
 
   return (
@@ -38,7 +38,7 @@ function Tasks() {
                   <tr key={item.id}>
                     <td>{item.name}</td>
                     <td style={{ width: "50%" }}>
-                    {
+                      {
                         projects.filter((obj: { id: string }) => {
                           return obj.id === item.projectId;
                         })[0].name
