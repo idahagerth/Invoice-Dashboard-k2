@@ -3,6 +3,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
+import { AiOutlineDelete } from "react-icons/ai";
 import axios from "axios";
 
 function Tasks() {
@@ -31,6 +32,7 @@ function Tasks() {
                 <tr>
                   <th>Tasks</th>
                   <th>Project Name</th>
+                  <th>delete</th>
                 </tr>
               </thead>
               <tbody>
@@ -43,6 +45,14 @@ function Tasks() {
                           return obj.id === item.projectId;
                         })[0].name
                       }
+                    </td>
+                    <td style={{ width: "25%" }}>
+                      <a
+                        onClick={() => deleteTasks(item.id)}
+                        style={{ paddingRight: "20px" }}
+                      >
+                        <AiOutlineDelete size={22} />
+                      </a>
                     </td>
                   </tr>
                 ))}
